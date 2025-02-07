@@ -24,7 +24,7 @@ def save_banned_people(banned_people):
         ws.append([person])
     wb.save("banned_people.xlsx")
 
-banned_people = load_banned_people()
+banned_people = []
 
 def banned_menu():
     print(f'The People who are banned from the club are: {banned_people}')
@@ -34,7 +34,6 @@ def banned_menu():
         banned_people.append(bannedadd)
         print(f'{bannedadd} has been added to the banned list')
         print(banned_people)
-        save_banned_people(banned_people)
     elif bannedm == 'remove':
         bannedrm = input("What is the name of the person you would like to remove? ")
         if bannedrm in banned_people:
@@ -43,6 +42,5 @@ def banned_menu():
         else:
             print(f'{bannedrm} is not in the banned list!')
         print(banned_people)
-        save_banned_people(banned_people)
     else:
         print('Invalid choice, returning to the main menu.')

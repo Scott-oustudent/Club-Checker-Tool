@@ -24,7 +24,6 @@ def banned_from_club():
     are_they_banned = input('What is the name of the person trying to enter the club? ')
     if are_they_banned in banned.banned_people:
         print('Do not allow entry to the club!!!')
-        log_id_check(are_they_banned, "Banned")
         return False
     else:
         print('Now lets check their age!')
@@ -39,7 +38,6 @@ def age_check(name):
     how_old = int(input('How old is the person trying to enter? '))
     if how_old < 18:
         print('This person is not old enough to enter!!!')
-        log_id_check(name, "Too Young")
         return False
     else:
         print('This person is old enough to enter. Let’s check their ID!')
@@ -51,7 +49,6 @@ def id_check(name):
     id_type = input('What form of ID are you presented with? ')
     if id_type not in valid_ids:
         print('Invalid ID type, please ask for another form of ID or decline entry!')
-        log_id_check(name, "Invalid ID")
         return False
     else:
         print('ID type is valid. Let’s check their date of birth!')
@@ -70,10 +67,8 @@ def dob_check(name):
     birthdate = f"{year}-{month:02d}-{day:02d}"  # Format birthdate as YYYY-MM-DD
     if is_legal_age(birthdate):
         print('Allow Entry!!!')
-        log_id_check(name, "Allowed")
     else:
         print('Do not allow entry!!!')
-        log_id_check(name, "Not of Legal Age")
 
 def nextp():
     answer = 'y'
