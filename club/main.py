@@ -2,8 +2,12 @@ from datetime import datetime, timedelta
 import sys
 import os
 from openpyxl import load_workbook, Workbook
+from banned_add import add_to_banned_list
+from banned_view import view_banned_list
+from banned_log import display_logs
+from id_check import nextp
 
-password = 'Brookhouse01!'
+password = 'Pa$$w0rd'
 log_file = "id_check_log.xlsx"
 banned_file = "banned_list.xlsx"
 
@@ -98,62 +102,29 @@ def dob_check(name, id_type):
         print('Do not allow entry!!!')
         log_id_check(name, 'Underage', birthdate, id_type)
 
-def nextp():
-    answer = 'y'
-    while answer == 'y':
-        name = input('What is the name of the person trying to enter the club? ')
-        if not banned_from_club(name):
-            answer = input("Press 'y' when you are ready to check the next person or press 'n' to leave the program: ")
-            continue
-        if not age_check(name):
-            answer = input("Press 'y' when you are ready to check the next person or press 'n' to leave the program: ")
-            continue
-        id_type = id_check(name)
-        if not id_type:
-            answer = input("Press 'y' when you are ready to check the next person or press 'n' to leave the program: ")
-            continue
-        dob_check(name, id_type)
-        answer = input("Press 'y' when you are ready to check the next person or press 'n' to leave the program: ")
-
 def manage_banned_list():
-    banned_list = read_banned_list()
     while True:
         action = input('Type "add" to add a person to the banned list, \nType "remove" to remove a person, \nType "view" to view the banned list, \nType "back" to return to the main menu: ')
         if action == 'add':
-            name = input('Enter the name of the person to ban: ')
-            banned_until = input('Enter the date until they are banned (dd/mm/yyyy): ')
-            if name not in [person for person, _ in banned_list]:
-                banned_list.append((name, banned_until))
-                write_banned_list(banned_list)
-                print(f'{name} has been added to the banned list until {banned_until}.')
-            else:
-                print(f'{name} is already on the banned list.')
+            add_to_banned_list()
         elif action == 'remove':
-            name = input('Enter the name of the person to remove from the banned list: ')
-            if name in [person for person, _ in banned_list]:
-                banned_list = [(person, date) for person, date in banned_list if person != name]
-                write_banned_list(banned_list)
-                print(f'{name} has been removed from the banned list.')
-            else:
-                print(f'{name} is not on the banned list.')
+            remove_from_banned_list()
         elif action == 'view':
-            print("Banned List:")
-            for person, banned_until in banned_list:
-                print(f'{person} - Banned until {banned_until}')
+            view_banned_list()
         elif action == 'back':
             break
         else:
             print('Invalid choice, please try again.')
 
-def display_logs():
-    if not os.path.exists(log_file):
-        print("No logs found.")
-        return
-    wb = load_workbook(log_file)
-    ws = wb.active
-    print("ID Check Logs:")
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        print(row)
+def remove_from_banned_list():
+    banned_list = read_banned_list()
+    name = input('Enter the name of the person to remove from the banned list: ')
+    if name in [person for person, _ in banned_list]:
+        banned_list = [(person, date) for person, date in banned_list if person != name]
+        write_banned_list(banned_list)
+        print(f'{name} has been removed from the banned list.')
+    else:
+        print(f'{name} is not on the banned list.')
 
 def start_session():
     print("Session started.")
