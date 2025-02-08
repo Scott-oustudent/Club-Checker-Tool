@@ -1,3 +1,6 @@
+[![CodeQL](https://github.com/WindowsSystemAdmin/research/actions/workflows/codeql.yml/badge.svg?branch=main&event=push)](https://github.com/WindowsSystemAdmin/research/actions/workflows/codeql.yml)
+
+
 # The Club Checker
 
 ## What is the Club Checker?
